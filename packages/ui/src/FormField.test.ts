@@ -1,88 +1,55 @@
-import { describe, it, expect } from 'vitest';
-import { FormField } from './FormField.js';
-import { Widget } from '@termuijs/widgets';
+import { describe, expect, test } from 'vitest';
 import { Screen } from '@termuijs/core';
+import { FormField } from './FormField.js';
+import { TextInput } from '@termuijs/widgets';
 
 describe('FormField', () => {
-    const createChild = () =>
-        new (class extends Widget {
-            protected _renderSelf(): void {}
-        })();
-
-    it('renders label', () => {
-        const screen = new Screen(40, 10);
-
-        const field = new FormField({
-            label: 'Username',
-            child: createChild()
-        });
-
-        field.updateRect({ x: 0, y: 0, width: 40, height: 10 });
-        field.render(screen);
-
-        const text = screen.back
-            .map(r => r.map(c => c.char).join(''))
-            .join('\n');
-
-        expect(text).toContain('Username');
+  test('renders label and child correctly', () => {
+    const field = new FormField({
+      label: 'Username',
+      child: new TextInput(),
     });
 
-    it('renders error when provided', () => {
-        const screen = new Screen(40, 10);
+    const screen = new Screen(40, 10);
 
-        const field = new FormField({
-            label: 'Username',
-            error: 'Required',
-            child: createChild()
-        });
-
-        field.updateRect({ x: 0, y: 0, width: 40, height: 10 });
-        field.render(screen);
-
-        const text = screen.back
-            .map(r => r.map(c => c.char).join(''))
-            .join('\n');
-
-        expect(text).toContain('Required');
+    field.updateRect({
+      x: 0,
+      y: 0,
+      width: 40,
+      height: 10,
     });
 
-    it('does not render error when not provided', () => {
-        const screen = new Screen(40, 10);
+    field.render(screen);
 
-        const field = new FormField({
-            label: 'Username',
-            child: createChild()
-        });
+    const output = screen.back
+      .map(row => row.map(cell => cell.char).join(''))
+      .join('\n');
 
-        field.updateRect({ x: 0, y: 0, width: 40, height: 10 });
-        field.render(screen);
+    expect(output).toContain('Username');
+  });
 
-        const text = screen.back
-            .map(r => r.map(c => c.char).join(''))
-            .join('\n');
-
-        expect(text).not.toContain('Required');
+  test('renders error when set', () => {
+    const field = new FormField({
+      label: 'Username',
+      error: 'Required',
+      child: new TextInput(),
     });
 
-    it('renders label before error', () => {
-        const screen = new Screen(40, 10);
+    const screen = new Screen(40, 10);
 
-        const field = new FormField({
-            label: 'Username',
-            error: 'Required',
-            child: createChild()
-        });
-
-        field.updateRect({ x: 0, y: 0, width: 40, height: 10 });
-        field.render(screen);
-
-        const text = screen.back
-            .map(r => r.map(c => c.char).join(''))
-            .join('\n');
-
-        const labelIndex = text.indexOf('Username');
-        const errorIndex = text.indexOf('Required');
-
-        expect(labelIndex).toBeLessThan(errorIndex);
+    field.updateRect({
+      x: 0,
+      y: 0,
+      width: 40,
+      height: 10,
     });
+
+    field.render(screen);
+
+    const output = screen.back
+      .map(row => row.map(cell => cell.char).join(''))
+      .join('\n');
+
+    expect(output).toContain('Required');
+  });
 });

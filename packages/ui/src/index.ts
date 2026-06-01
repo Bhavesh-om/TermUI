@@ -48,8 +48,10 @@ export type { ToastType, ToastMessage, ToastOptions } from './Toast.js';
 export { ConfirmDialog } from './ConfirmDialog.js';
 export type { ConfirmDialogOptions } from './ConfirmDialog.js';
 
+export { FormField } from './FormField.js';
 export { Form } from './Form.js';
-export type { FormField, FormOptions } from './Form.js';
+export type {FormOptions } from './Form.js';
+
 
 export { CommandPalette } from './CommandPalette.js';
 export type { Command, CommandPaletteOptions } from './CommandPalette.js';
